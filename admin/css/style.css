@@ -1,0 +1,29 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-family: Arial, Helvetica, sans-serif;
+}
+.main{
+    padding: 50px 120px;
+    margin: 0 auto;
+}
+.fileManager{
+    margin: 0 auto;
+    background-color: rgba(105, 105, 165, 0.522);
+    padding: 20px 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.folderList, .fileList{
+    list-style: none;
+    font-size: 16px;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.folderListIcon, .fileListIcon{
+    width: 18px;
+    margin-right: 5px;
+}
