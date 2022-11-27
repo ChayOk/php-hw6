@@ -9,6 +9,7 @@
 </head>
 <body>
     <section class="main">
+        <h1 class="title">File manager</h1>
         <div class="fileManager">   
             <div class="folders">
                 <ul>
@@ -22,30 +23,14 @@
                         if ($dh = opendir($folder)) {
                             while (($file = readdir($dh)) !== false) {
                                 if (is_dir($folder . '/' . $file)) {
-                                    echo "<li class='folderList'><a href='/?folder=" . $file . "'><img src='./img/folder_icon.svg' class='folderListIcon'>{$file}</a></li>";
+                                    echo "<li class='folderList'><a href='/?folder=" . $file . "'><img src='./img/folder_icon.svg' class='folderListIcon'><span>{$file}</span></a></li>";
                                 }else{
-                                    echo "<li class='fileList'><a href='/{$file}'><img src='./img/file_icon.svg' class='fileListIcon'>{$file}</a></li>";
-                                }
-                                
-                            }
-                            closedir($dh);
-                        }
-                    }
-                    ?>
-                </ul>
-            </div>
-            <div class="files">
-            <ul>
-                    <?php 
-                    $folder = '../admin/';
-                    // die(var_dump(is_dir($folder)));
-                    if (is_dir($folder)) {
-                        if ($dh = opendir($folder)) {
-                            while (($file = readdir($dh)) !== false) {
-                                if (is_dir($folder . '/' . $file)) {
-                                    echo "<li class='folderList' style='line-height: 23px'>" . filesize($file) . "</li>";
-                                }else{
-                                    echo "<li class='fileList' style='line-height: 23px'>" . filesize($file) . "</li>";
+                                    if($folder != './'){
+                                        $fileLink = $folder.'/'.$file;
+                                    }else{
+                                        $fileLink = $file;
+                                    }
+                                    echo "<li class='fileList'><a href='$fileLink' target='_blank'><img src='./img/file_icon.svg' class='fileListIcon'><span>{$file}</span></a></li>";                                    
                                 }
                                 
                             }
@@ -56,13 +41,50 @@
                 </ul>
             </div>
             <div class="actions">
+                <form action="show.php" method="POST" class="readFile">
+                    <h4>Посмотреть/добавить/изменить файл</h4>
+                    <label for="">
+                        <input type="text" name="fileName" placeholder="Введите название файла">
+                    </label>
+                    <input type="hidden" name="folder" value="<?php echo $_GET['folder']; ?>">
+                    <button>Изменить</button>
+                </form>
 
+                <form action="addFolder.php" method="POST" class="addFolder">
+                    <h4>Добавить каталог</h4>
+                    <label for="">
+                        <input type="text" name="folderName" placeholder="Введите название каталога">
+                        <input type="hidden" name="folder" value="<?php echo $_GET['folder']; ?>">
+                    </label>
+                    <button>Добавить</button>
+                </form>
+
+                <form action="renameFile.php" method="POST" class="renameFolder">
+                    <h4>Переименовать файл или каталог</h4>
+                    <label for="">
+                        <input type="text" name="oldNameFile" placeholder="Введите старое название">
+                        <input type="text" name="newNameFile" placeholder="Введите новое название">
+                        <input type="hidden" name="folder" value="<?php echo $_GET['folder']; ?>">
+                    </label>
+                    <button>Переименовать</button>
+                </form>
+
+                <form action="removeFile.php" method="POST" class="removeFolder">
+                    <h4>Удалить файл или каталог</h4>
+                    <label for="">
+                        <input type="text" name="removeFolder" placeholder="Введите название файла или каталога">
+                        <input type="hidden" name="folder" value="<?php echo $_GET['folder']; ?>">
+                    </label>
+                    <button>Удалить</button>
+                </form>
+
+                <form action="explorer.php" method="POST" enctype="multipart/form-data" class="uploadFile">
+                    <h4>Загрузить файл</h4>
+                    <input type="file" multiple name="files[]">            
+                    <button>Загрузить</button>
+                </form>
             </div>
         </div> 
     </section>
-    <form action="explorer.php" method="POST" enctype="multipart/form-data">
-        <input type="file" multiple name="files[]">
-        <button>Отправить</button>
-    </form>
 </body>
 </html>
